@@ -425,7 +425,7 @@ function describe() {
   tick("Vision", "described the photo; poster can edit it");
   return sayAll([
     [p.desc || "", { el: "v-desc" }],
-    ["Ask me anything about it, like what she's wearing, or what's in the background."],
+    ["Ask me anything about it, like what colors are in it, or what's in the background."],
   ]);
 }
 function askPhoto(q: string) {

@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "concurrently -n server,web -c blue,green \"npm run dev -w server\" \"npm run dev -w web\"",
     "check": "tsx scripts/check.ts",
-    "setup": "tsx scripts/create-assistant.ts"
+    "setup": "tsx scripts/create-assistant.ts",
+    "new-tunnel": "tsx scripts/new-tunnel.ts"
   },
   "devDependencies": {
     "concurrently": "^10.0.7",
