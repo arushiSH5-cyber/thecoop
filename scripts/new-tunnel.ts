@@ -15,15 +15,14 @@ const text = fs.existsSync(LOCAL_ENV) ? fs.readFileSync(LOCAL_ENV, "utf8") : "";
 const kept = text.split("\n").filter((l) => l && !l.startsWith("PUBLIC_URL="));
 fs.writeFileSync(LOCAL_ENV, [`PUBLIC_URL=${url}`, ...kept, ""].join("\n"), { mode: 0o600 });
 
-const vercelJson = path.join(ROOT, "web/vercel.json");
-fs.writeFileSync(
-  vercelJson,
-  JSON.stringify({ rewrites: [{ source: "/api/:path*", destination: `${url}/api/:path*` }] }, null, 2) + "\n",
-);
+const vercelJson = path.join(ROOT, "vercel.json");
+const config = JSON.parse(fs.readFileSync(vercelJson, "utf8"));
+config.rewrites = [{ source: "/api/:path*", destination: `${url}/api/:path*` }];
+fs.writeFileSync(vercelJson, JSON.stringify(config, null, 2) + "\n");
 console.log(`✅ Saved the new link: ${url}`);
 
 const run = (cmd: string, cwd = ROOT) => execSync(cmd, { cwd, stdio: "inherit", env: { ...process.env, PUBLIC_URL: url } });
 run("npm run -s setup");
 console.log("Deploying the live site…");
-run("npx --yes vercel@latest deploy --prod --yes", path.join(ROOT, "web"));
+run("npx --yes vercel@latest deploy --prod --yes");
 console.log("✅ Done. Restart npm run dev so the server uses the new link.");
