@@ -73,19 +73,95 @@ No microphone? Every voice command also works by typing, by tapping the chips on
 
 We'd design and test every screen of the real product with blind and low-vision people. It's built to work alongside VoiceOver and TalkBack, not to replace them.
 
-## Sponsors, and what each one does
+## Why voice changes everything
 
-| Sponsor | What it powers | Status |
-|---|---|---|
-| **Vapi** | Coo herself: the voice assistant, 18 tools, the web mic, interruptions, phone calls | ✅ live |
-| **Deepgram** | Coo's ears (Flux speech-to-text), Coo's voice and all 8 friends' voices (Aura-2), and transcripts of recorded voice posts | ✅ live |
-| **Exa** | Real news from the last 48 hours, "more like this", help from official sites only, beginner lessons | ✅ live |
-| **TypeSafe Jev** | Holds scams and harassment, the "are you sure?" check, and working out what you meant | 🧪 built; keyword rules stand in, labeled "sample", until our key is added |
-| **Manus** | "Do it for me": web chores that are hard with a screen reader, always stopping for your yes | 🧪 built; a labeled sample run until our key is added |
-| **AdaL** | Captioned share clips, so sighted friends can join in | 🧪 no public video API, so clips are made in the browser, labeled "sample" |
-| **Claude** (not a sponsor) | Describes a shared photo and answers questions about it | ✅ live |
+For a sighted person, a social app is something you look at. For a blind person, today's apps are something you fight with: swipe, listen to a button name, swipe, hear *"image,"* swipe again. Voice removes the fight.
 
-Anything not live says **"sample"** on screen and out loud. We'd rather show you that than fake it.
+- **Speed.** Saying *"next"* beats ten swipes through buttons and menus. A whole feed takes a couple of minutes, not twenty.
+- **Nothing to learn.** No gestures, no screen reader commands, no menus. If you can talk, you can use The Coop. That matters most for people who lose their sight later in life.
+- **Warmth.** Hearing a friend's own voice describe the ocean is closer than any caption. A synthetic screen reader voice reading a post just isn't the same thing as Maya telling you about it.
+- **Hands and eyes free.** It works the same while cooking, walking with a cane or guide dog, or resting tired eyes, so it's better for everyone, like curb cuts.
+- **Trust out loud.** Coo names every source, says when something is a sample, and asks before anything risky. When you can't see the screen, what you hear has to be honest.
+
+## Powered by our sponsors
+
+The Coop only works because each of these does one job really well. Take any one away and a blind user would feel it.
+
+<table>
+<tr><td width="50%" valign="top">
+
+### 🎙️ Vapi
+**Coo's whole body: the conversation itself.**
+
+Vapi runs Coo, our voice assistant: listening, thinking, talking, and being interrupted naturally. It connects Coo to our 18 tools, powers the big mic button on the web, and can put Coo on a phone line, so even a landline works.
+
+**Why it matters for blind users:** voice *is* the interface. Natural turn-taking and interruptions ("next!" mid-sentence) are what make it feel like talking to a person instead of a menu.
+
+**Status:** ✅ live
+
+</td><td width="50%" valign="top">
+
+### 👂 Deepgram
+**Coo's ears, and every friend's voice.**
+
+Deepgram's Flux model hears you and knows when you've finished talking. Its Aura-2 voices give Coo a warm voice and give each of the 8 friends their own, so the feed sounds like real people. It also transcribes voice posts recorded in the app.
+
+**Why it matters for blind users:** a feed you listen to lives or dies on audio. Fast, accurate listening means no repeating yourself, and distinct voices mean you know who's talking without being told.
+
+**Status:** ✅ live
+
+</td></tr>
+<tr><td valign="top">
+
+### 🔎 Exa
+**Real information, with real sources.**
+
+Exa finds today's news (good news for the blind and low-vision community: accessibility, assistive tech, vision research), finds "more like this", searches **only official sites** for help with rides, audiobooks and jobs, and finds beginner lessons.
+
+**Why it matters for blind users:** you can't glance at a URL to judge if something is trustworthy. Coo says the outlet out loud and the link is on screen, so every fact has a source you can trust.
+
+**Status:** ✅ live
+
+</td><td valign="top">
+
+### 🛡️ TypeSafe Jev
+**The safety net that decides, not chats.**
+
+Jev makes typed decisions: hold or allow a message, and whether Coo should ask "are you sure?" before sending, posting, calling or spending. It also figures out what you meant when a request is unclear.
+
+**Why it matters for blind users:** scams target people who can't see the red flags. Jev holds scams before they're ever read aloud, so nobody has to hear them.
+
+**Status:** 🧪 built; simple keyword rules stand in, labeled "sample", until our key is added
+
+</td></tr>
+<tr><td valign="top">
+
+### 🤲 Manus
+**Hands for the web.**
+
+Say *"do it for me: refill my prescription,"* and Manus works through the website for you, narrating as it goes, and **always stops for your yes** before anything final.
+
+**Why it matters for blind users:** many websites are still hard or impossible with a screen reader. Manus turns a frustrating hour of forms into one sentence.
+
+**Status:** 🧪 built; a labeled sample run until our key is added
+
+</td><td valign="top">
+
+### 🎬 AdaL
+**Bringing sighted friends in.**
+
+Turns any journey into a captioned share clip for Instagram or TikTok, so friends who scroll with their eyes can join the conversation.
+
+**Why it matters for blind users:** The Coop shouldn't be a separate island. Share clips connect blind users to the friends and family already on other apps.
+
+**Status:** 🧪 we found no public AdaL video API, so clips are made in the browser and labeled "sample"
+
+</td></tr>
+</table>
+
+**Also inside:** Claude describes a shared photo and answers questions about it, but it never guesses who someone is. ✅ live
+
+Anything not live says **"sample"**, on screen and out loud. We'd rather show you that than fake it.
 
 ## Screens
 
