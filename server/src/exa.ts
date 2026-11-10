@@ -45,7 +45,9 @@ async function post(path: string, body: unknown): Promise<Source[] | null> {
       return null;
     }
     const { results } = (await r.json()) as { results: unknown[] };
-    return results.map(normalize);
+    // Coo speaks English, so skip results whose title is mostly in another script.
+    const readable = (s: Source) => [...s.title].filter((c) => c.charCodeAt(0) < 0x250 || /[ -⁯]/.test(c)).length >= s.title.length * 0.9;
+    return results.map(normalize).filter(readable);
   } catch {
     console.error(`Exa ${path}: network error`);
     return null;
@@ -83,7 +85,9 @@ export function searchLesson(topic: string) {
 }
 
 export async function similarTo(url: string, title: string) {
-  const similar = await post("findSimilar", { url, numResults: 4, contents });
-  const found = similar ?? (await post("search", { query: title, numResults: 4, contents }));
+  const since = new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString();
+  const similar = await post("findSimilar", { url, numResults: 8, startPublishedDate: since, contents });
+  const fresh = similar?.filter((s) => s.url !== url);
+  const found = fresh?.length ? fresh : await post("search", { query: title, category: "news", startPublishedDate: since, numResults: 6, contents });
   return found ? found.filter((s) => s.url !== url) : null;
 }
