@@ -57,7 +57,7 @@ const contents = { highlights: { maxCharacters: 700 }, text: { maxCharacters: 70
 export function searchNews(topic?: string) {
   const since = new Date(Date.now() - 48 * 3600 * 1000).toISOString();
   return post("search", {
-    query: topic ? `latest news about ${topic}` : "good news about accessibility, disability and community today",
+    query: topic ? `latest news about ${topic}` : "good news for blind and low-vision people: accessibility, assistive technology, vision research and community",
     category: "news",
     numResults: 5,
     startPublishedDate: since,

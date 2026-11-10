@@ -233,7 +233,7 @@ const findHelp: Handler = async (args) => {
 };
 
 const learn: Handler = async (args) => {
-  const topic = str(args.topic) || "everyday tips for living with low vision";
+  const topic = str(args.topic) || "a new everyday skill for blind people";
   const found = await searchLesson(topic);
   if (found?.length) {
     const s = found[0];

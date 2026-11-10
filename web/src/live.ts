@@ -122,7 +122,7 @@ function finishClip(clip: Clip | null) {
     if (clip.last) setTimeout(() => vapi?.say("That's everything from your friends. You're all caught up."), 250);
     else addMessage("user", "next");
   } else if (clip.has_photo) {
-    setTimeout(() => vapi?.say("There's a photo. Say describe it to hear what's in it."), 250);
+    setTimeout(() => vapi?.say("They shared a photo too. Say describe it if you'd like to hear it."), 250);
   }
 }
 

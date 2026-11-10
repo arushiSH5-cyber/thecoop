@@ -409,15 +409,15 @@ function announce() {
 }
 function lobbyIntro() {
   return say(
-    `Welcome back. You have ${allPosts().length} posts from friends, ${NEWS.length} stories in the news, and 2 circles talking today. Where do you want to go?`,
+    `Welcome back. You have ${allPosts().length} journeys from friends, ${NEWS.length} stories in the news, and ${CIRCLES.length} circles talking today. Where do you want to go?`,
   );
 }
 async function playPost() {
   const p = cur();
-  tick("Deepgram", `${p.who}'s voice post, in their own voice`);
+  tick("Deepgram", `${p.who}'s journey, in their own voice`);
   await say(`${p.who}, ${p.ago}.`);
   await sayAll([[p.voice, { pitch: p.pitch, rate: p.rate, el: "v-body" }]]);
-  if (p.scene) await say("There's a photo. Say describe it to hear what's in it.");
+  if (p.scene) await say("They shared a photo too. Say describe it if you'd like to hear it.");
 }
 function describe() {
   const p = cur();

@@ -67,12 +67,12 @@ function FeedList({ s }: { s: AppState }) {
             <div className="room"><Ic n="feed" />{on ? "now playing" : `post ${i + 1}`}<span className="pos">{i + 1} of {L.length}</span></div>
             <div className="who">
               <span className="av" style={{ background: p.col }}>{p.init}</span>
-              <div><b>{p.who}</b><small>voice post · {p.ago}</small></div>
+              <div><b>{p.who}</b><small>audio journey · {p.ago}</small></div>
             </div>
             <p {...rd("body", "v-body")}>“{p.voice}”</p>
             {p.scene && (
               <>
-                <div className="scene"><Photo id={p.id} scene={p.scene} alt={p.desc || ""} /><span className="tag">photo · described</span></div>
+                <div className="scene"><Photo id={p.id} scene={p.scene} alt={p.desc || ""} /><span className="tag">photo they shared · say “describe it”</span></div>
                 <p {...rd("desc", "v-desc")}><b>what's in the photo</b>{p.desc}</p>
               </>
             )}
@@ -105,9 +105,9 @@ function NowPlaying({ s }: { s: AppState }) {
           <p>Social media you can hear. Tap the mic and say “what's new?”</p>
         </div>
         <ul className="list">
-          <li><Ic n="feed" /><div>{allPosts(s).length} posts from friends<small>say “go to feed”</small></div></li>
+          <li><Ic n="feed" /><div>{allPosts(s).length} audio journeys from friends<small>say “go to feed”</small></div></li>
           <li><Ic n="news" /><div>{NEWS.length} stories in the news<small>say “go to news”</small></div></li>
-          <li><Ic n="circles" /><div>2 circles talking today<small>say “go to circles”</small></div></li>
+          <li><Ic n="circles" /><div>{(s.circles || CIRCLES).length} circles talking today<small>say “go to circles”</small></div></li>
           <li><Ic n="mic" /><div>Everyone mode: hands-free<small>say “play my feed” and cook, walk or rest your eyes</small></div></li>
         </ul>
         <button className="btn" aria-pressed={s.settings.everyone} onClick={() => setEveryone(!s.settings.everyone)}>
