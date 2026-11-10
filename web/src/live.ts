@@ -330,17 +330,22 @@ function onServerEvent(ev: any) {
   }
 }
 
-/* Reconnects after a server restart, so the screen never silently stops updating. */
-function connectEvents() {
-  const es = new EventSource("/api/events");
-  es.onmessage = (e) => onServerEvent(JSON.parse(e.data));
-  es.onerror = () => {
-    if (es.readyState !== EventSource.CLOSED) return;
-    setTimeout(async () => {
-      connectEvents();
-      applyServerState(await (await fetch("/api/state")).json());
-    }, 1500);
-  };
+/* Polls for screen updates. A stream would be held back by the tunnel and by Vercel; polling works through both.
+   After an error or a server restart it resyncs the saved state, so the screen never silently stops updating. */
+let after = -1;
+async function connectEvents() {
+  let wait = 600;
+  try {
+    const r = await fetch(`/api/poll?after=${after}`, { cache: "no-store" });
+    const { seq, events } = (await r.json()) as { seq: number; events: any[] };
+    const restarted = after > seq;
+    after = seq;
+    if (restarted) applyServerState(await (await fetch("/api/state")).json());
+    events.forEach(onServerEvent);
+  } catch {
+    wait = 2000;
+  }
+  setTimeout(connectEvents, wait);
 }
 
 export async function initLive() {

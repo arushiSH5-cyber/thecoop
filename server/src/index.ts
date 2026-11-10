@@ -2,7 +2,7 @@ import "./env.ts";
 import crypto from "node:crypto";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { POSTS } from "../../web/src/data.ts";
-import { addClient, publish, tick } from "./bus.ts";
+import { addClient, eventsSince, publish, tick } from "./bus.ts";
 import { onCallEvent } from "./calls.ts";
 import { moderate } from "./jev.ts";
 import { addPost, holdPost, moderateCircles, publicState } from "./store.ts";
@@ -48,6 +48,11 @@ app.get("/api/config", (_req, res) => {
 });
 
 app.get("/api/events", (_req, res) => addClient(res));
+
+app.get("/api/poll", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json(eventsSince(Number(req.query.after ?? -1)));
+});
 
 app.get("/api/voice/:id", async (req, res) => {
   const id = req.params.id;
