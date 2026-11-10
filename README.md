@@ -21,6 +21,12 @@ Friends share *audio journeys* of where they went and how it felt. Coo, a friend
 
 ---
 
+## Watch the 2-minute explainer
+
+[<img src="docs/explainer-poster.jpg" width="640" alt="Video: The Coop explainer, narrated by Coo. Click to watch.">](docs/thecoop-explainer.mp4)
+
+**[▶ Watch the explainer (MP4, 2 min)](docs/thecoop-explainer.mp4)**: narrated by Coo in her Deepgram voice, with Maya's real audio journey and built-in captions ([caption file](docs/thecoop-explainer.srt)).
+
 ## Listen first
 
 This README is written to work with a screen reader. Every image has a description, and here's the heart of the app as sound. These are real clips from the app, each friend in their own voice:
