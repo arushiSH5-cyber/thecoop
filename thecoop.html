@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Coop</title>
+<meta name="description" content="Social media you can hear. A voice-first community for blind and low-vision people.">
+<meta name="theme-color" content="#cfe3f0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* The Coop — "social media you can hear".
+   Layout: one phone column like a podcast "now playing" screen:
+   header (logo, room, about, settings) → now-playing card (what Coo is on) → live captions → command chips → big mic → room strip.
+   Looks: "Soft" (Newscrolly sky→peach) and "High contrast" (yellow on black, for low vision). Text is large by default. */
+:root{
+  --paper:#f4f6f2; --card:#fffefb; --ink:#262c4a; --text:#232842; --soft:#555c7e;
+  --p1:#c6f1d8; --p2:#1f9d62; --b1:#d2e2ff; --b2:#3d74e0; --k1:#ffdcc5; --k2:#e8642c;
+  --hl:#ffe9ad; --on:#ffffff; --cheek:#ffa58a;
+  --head:"Gaegu","Comic Neue","Chalkboard SE",cursive;
+  --body:"Atkinson Hyperlegible","DM Sans",system-ui,sans-serif;
+  --fs:1; --ex:0; --ey:0;
+  color-scheme:light;
+}
+html.hc{--paper:#000;--card:#000;--ink:#ffe14d;--text:#fff;--soft:#ffe14d;--p1:#1b1b00;--p2:#ffe14d;--b1:#00133d;--b2:#8fb5ff;--k1:#2b1500;--k2:#ffb07a;--hl:#4a4000;--on:#000;color-scheme:dark}
+html.calm *,html.calm *::before,html.calm *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{font-family:var(--body);color:var(--text);font-size:calc(18px*var(--fs));line-height:1.5;overflow:hidden;background-color:#eaf3ee;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 800' preserveAspectRatio='none'%3E%3Cpath d='M0 0h400v170c-70 40-120-30-200 10S60 300 0 270z' fill='%23fff' opacity='.22'/%3E%3Cpath d='M0 430c80-60 130 40 220-20s130-110 180-90v480H0z' fill='%23fff' opacity='.28'/%3E%3Cpath d='M120 800c40-110 150-90 200-170 30-50 60-60 80-55v225z' fill='%23ffc9a8' opacity='.55'/%3E%3C/svg%3E"),linear-gradient(165deg,#bcd3ff 0%,#c9ecdc 34%,#f6f3e2 60%,#ffd6bd 100%);
+  background-size:100% 100%;background-attachment:fixed}
+html.hc body{background:#000}
+button,input,select{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer;padding:0}
+:focus-visible{outline:4px solid var(--b2);outline-offset:3px;border-radius:14px}
+html.hc :focus-visible{outline-color:#fff}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+#app{height:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column;position:relative}
+.hdr{display:flex;align-items:center;gap:8px;padding-top:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.logo{flex:1;min-width:0;display:flex;align-items:center;gap:6px;font-family:var(--head);font-weight:700;font-size:30px;line-height:1;white-space:nowrap}
+.logo svg{width:42px;height:42px;flex:none}
+.chip{height:44px;min-width:44px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;background:var(--card);border:2px solid var(--ink);font-weight:700;font-size:15px;box-shadow:2px 3px 0 var(--ink);transition:transform .25s cubic-bezier(.3,1.8,.5,1)}
+.chip:active{transform:scale(.9)}
+.chip svg{width:24px;height:24px}
+
+main{flex:1;min-height:0;overflow-y:auto;padding-top:10px;padding-bottom:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
+main::-webkit-scrollbar{display:none}
+
+/* now playing card */
+.np{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:22px 28px 20px 30px/28px 20px 30px 22px;box-shadow:6px 7px 0 var(--k1),6px 7px 0 2.5px var(--ink);padding:16px;display:grid;gap:10px;animation:pop .6s cubic-bezier(.2,1.5,.35,1)}
+@keyframes pop{0%{transform:translateY(16px) scale(.96);opacity:.4}}
+html.hc .np{box-shadow:none}
+.tape{position:absolute;top:-13px;left:50%;width:96px;height:24px;transform:translateX(-50%) rotate(-3deg);background:color-mix(in srgb,var(--b2) 40%,transparent);clip-path:polygon(0 8%,6% 0,12% 10%,18% 0,82% 0,88% 10%,94% 0,100% 8%,100% 92%,94% 100%,88% 90%,82% 100%,18% 100%,12% 90%,6% 100%,0 92%)}
+html.hc .tape{display:none}
+.room{display:flex;align-items:center;gap:8px;font-family:var(--head);font-weight:700;font-size:22px;color:var(--soft);line-height:1}
+.room svg{width:30px;height:30px}
+.room .pos{margin-left:auto;font-family:var(--body);font-size:14px;font-weight:700}
+.who{display:flex;align-items:center;gap:10px}
+.av{width:52px;height:52px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:26px;flex:none}
+.who b{display:block;font-size:calc(19px*var(--fs));line-height:1.2}
+.who small{color:var(--soft);font-size:14px}
+.np h2{font-family:var(--head);font-weight:700;font-size:calc(32px*var(--fs));line-height:1.02;margin:0;text-wrap:balance}
+html.hc .np h2{font-family:var(--body);font-size:calc(28px*var(--fs))}
+.scene{border:2px solid var(--ink);border-radius:16px;overflow:hidden;background:var(--b1);position:relative}
+.scene svg{display:block;width:100%;height:auto}
+.scene .tag{position:absolute;left:10px;bottom:10px;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
+.body{font-size:calc(19px*var(--fs));margin:0}
+.desc{background:var(--b1);border-radius:14px 18px 12px 20px;padding:10px 14px;font-size:calc(17px*var(--fs));margin:0}
+.desc b{display:block;font-family:var(--head);font-size:19px;color:var(--soft);line-height:1.1}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--soft);font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--ink);border-radius:999px;padding:1px 10px;background:var(--card);color:var(--text)}
+.pill.on{background:var(--k1)}
+.pill svg{width:18px;height:18px}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.list li{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);border-radius:14px 18px 12px 20px;padding:10px 12px;background:var(--card);font-weight:700}
+.list li svg{width:34px;height:34px;flex:none}
+.list li small{display:block;font-weight:400;color:var(--soft);font-size:14px}
+.reading{background:var(--hl);border-radius:8px;box-shadow:0 0 0 4px var(--hl)}
+
+/* captions */
+main>.cap{position:sticky;bottom:0;z-index:5;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.cap{border:2.5px dashed color-mix(in srgb,var(--ink) 55%,transparent);border-radius:20px;padding:12px 14px;background:color-mix(in srgb,var(--card) 92%,transparent);display:grid;gap:6px}
+html.hc .cap{border-color:var(--ink);background:#000}
+.cap .row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start}
+.cap .lab{font-family:var(--head);font-weight:700;font-size:19px;line-height:1.3;color:var(--soft);white-space:nowrap}
+.cap .coo-says{font-size:calc(20px*var(--fs));font-weight:700;line-height:1.4}
+.cap .you-said{font-size:calc(17px*var(--fs));color:var(--soft);font-style:italic}
+
+/* command chips */
+.cmds{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 6px}
+.cmds::-webkit-scrollbar{display:none}
+.cmd{flex:none;border:2px solid var(--ink);border-radius:999px;background:var(--card);padding:7px 14px;font-weight:700;font-size:calc(16px*var(--fs));box-shadow:2px 3px 0 var(--ink);transition:transform .25s cubic-bezier(.3,1.8,.5,1)}
+.cmd:active{transform:scale(.9)}
+.cmd::before{content:"say “";color:var(--soft);font-weight:400}
+.cmd::after{content:"”";color:var(--soft);font-weight:400}
+
+/* dock: mic + type + rooms */
+.dock{padding-top:6px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:10px;background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 70%,transparent) 30%)}
+html.hc .dock{background:#000;border-top:2px solid var(--ink)}
+.microw{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:12px}
+.mic{justify-self:center;position:relative;width:88px;height:88px;border-radius:50%;background:var(--b2);border:3px solid var(--ink);box-shadow:4px 5px 0 var(--ink);display:grid;place-items:center;transition:transform .25s cubic-bezier(.3,1.8,.5,1)}
+html.hc .mic{background:var(--ink);box-shadow:none}
+.mic svg{width:44px;height:44px}
+.mic:active{transform:scale(.92)}
+.mic::before,.mic::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:3px solid var(--b2);opacity:0}
+.mic.live{background:var(--k2)}
+.mic.live::before{animation:ring 1.4s ease-out infinite}.mic.live::after{animation:ring 1.4s ease-out .7s infinite}
+@keyframes ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.mic.talking{animation:breathe 1.2s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.06)}}
+.miclab{text-align:center;font-weight:700;font-size:14px;color:var(--soft);margin-top:-4px}
+.side{width:52px;height:52px;border-radius:50%;background:var(--card);border:2px solid var(--ink);display:grid;place-items:center;box-shadow:2px 3px 0 var(--ink)}
+.side svg{width:28px;height:28px}
+.typebox{display:flex;gap:8px}
+.typebox input{flex:1;min-width:0;height:48px;border-radius:16px;border:2px solid var(--ink);background:var(--card);padding:0 14px;font-size:16px}
+.typebox button{height:48px;padding:0 16px;border-radius:16px;background:var(--ink);color:var(--on);font-weight:700}
+.rooms{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.rooms button{display:flex;flex-direction:column;align-items:center;gap:0;font-family:var(--head);font-weight:700;font-size:16px;color:var(--soft);padding:4px 0;border-radius:16px}
+html.hc .rooms button{font-family:var(--body);font-size:13px}
+.rooms button svg{width:32px;height:32px}
+.rooms button[aria-current="page"]{color:var(--text);background:var(--k1)}
+html.hc .rooms button[aria-current="page"]{background:#222;outline:2px solid var(--ink)}
+
+/* doodle icons */
+.ic *{stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.ic .p1{fill:var(--p1)}.ic .b1{fill:var(--b1)}.ic .k1{fill:var(--k1)}.ic .c{fill:var(--card)}.ic .ik{fill:var(--ink);stroke:none}.ic .ibl{fill:var(--cheek);stroke:none;opacity:.6}
+.mic .ic *{stroke:#fff}.mic .ic .c{fill:transparent}
+html.hc .mic .ic *{stroke:#000}
+
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(20,24,40,.35);z-index:70;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;width:min(560px,100%);transform:translate(-50%,105%);z-index:71;background:var(--card);border:2.5px solid var(--ink);border-bottom:0;border-radius:28px 32px 0 0;padding:18px max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));max-height:88%;overflow-y:auto;transition:transform .4s cubic-bezier(.3,1.2,.5,1);display:grid;gap:12px}
+.sheet.on{transform:translate(-50%,0)}
+.sheet h3{font-family:var(--head);font-size:34px;margin:0 50px 0 0;line-height:1}
+.sheet .x{position:absolute;right:16px;top:14px}
+.why{display:grid;gap:10px}
+.why div{border:2px solid var(--ink);border-radius:14px 18px 12px 20px;padding:10px 14px}
+.why div:nth-child(3n+1){background:var(--b1)}.why div:nth-child(3n+2){background:var(--k1)}.why div:nth-child(3n){background:var(--p1)}
+.why b{display:block;font-family:var(--head);font-size:22px;line-height:1.1}
+.why p{margin:2px 0 0;font-size:15.5px}
+.kbd{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px}
+.kbd kbd{font-family:var(--body);font-weight:700;border:2px solid var(--ink);border-radius:8px;padding:0 8px;background:var(--b1);text-align:center}
+.set{display:grid;gap:0;border:2px solid var(--ink);border-radius:18px;padding:2px 14px}
+.set label,.set .r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1.5px dashed color-mix(in srgb,var(--ink) 40%,transparent);font-weight:700}
+.set label:last-child,.set .r:last-child{border-bottom:0}
+.set small{display:block;font-weight:400;color:var(--soft);font-size:13.5px}
+.set input[type=checkbox]{width:26px;height:26px;accent-color:var(--b2)}
+.set input[type=range]{width:140px;accent-color:var(--b2)}
+.set select{border:2px solid var(--ink);border-radius:10px;background:var(--card);padding:6px;max-width:160px;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:24px;background:var(--b2);color:#fff;border:2px solid var(--ink);box-shadow:3px 4px 0 var(--ink);font-weight:700;font-size:17px}
+html.hc .btn{background:var(--ink);color:#000;box-shadow:none}
+.note{font-size:14px;color:var(--soft);margin:0}
+
+.toast{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top,0px));transform:translate(-50%,-8px);opacity:0;background:var(--ink);color:var(--on);padding:8px 16px;border-radius:999px;font-weight:700;z-index:90;transition:.25s;pointer-events:none;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.burst{position:fixed;z-index:95;width:40px;height:40px;pointer-events:none;animation:burst .9s cubic-bezier(.2,1.2,.4,1) forwards}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}30%{transform:translate(-50%,-110%) scale(1.3);opacity:1}100%{transform:translate(-50%,-230%) scale(.9) rotate(12deg);opacity:0}}
+.coo .eyes{transform:translate(calc(var(--ex)*1.8px),calc(var(--ey)*1.4px));transition:transform .12s}
+.coo .blink{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+@keyframes blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+.coo.talk{animation:talk .35s ease-in-out infinite alternate}
+@keyframes talk{to{transform:translateY(-2px) rotate(-3deg)}}
+.ticker{display:flex;align-items:center;gap:8px;margin:8px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));padding:6px 10px;border:2px solid var(--ink);border-radius:999px;background:var(--card);font-size:14px;font-weight:700;min-height:38px;overflow:hidden}
+.ticker .sp{flex:none;padding:1px 10px;border-radius:999px;background:var(--ink);color:var(--on);font-size:13px}
+.ticker .msg{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ticker.flash{animation:flash .7s ease}
+@keyframes flash{0%{transform:scale(.96);background:var(--k1)}100%{transform:none}}
+.ticker .dots{margin-left:auto;display:flex;gap:4px;flex:none}
+.ticker .dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);background:var(--card)}
+.ticker .dots i.on{background:var(--p2)}
+.call{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:linear-gradient(170deg,#bcd3ff,#c9ecdc 50%,#ffd6bd)}
+html.hc .call{background:#000}
+.call .ph{width:120px;height:120px;border-radius:50%;border:3px solid var(--ink);background:var(--k1);display:grid;place-items:center;font-family:var(--head);font-size:56px;font-weight:700;animation:ringph 1s ease-in-out infinite}
+@keyframes ringph{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-4deg)}}
+.call h3{font-family:var(--head);font-size:36px;margin:0;line-height:1}
+.call p{margin:0;max-width:32ch;font-size:18px}
+.call .st{font-weight:700;color:var(--soft)}
+.welcome{display:grid;justify-items:center;text-align:center;gap:8px;padding:14px 4px}
+.welcome svg.coo{width:150px;height:150px}
+.welcome h1{font-family:var(--head);font-size:44px;margin:0;line-height:1}
+.welcome p{margin:0;color:var(--soft);max-width:30ch}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="hdr">
+    <span class="logo" id="logo"></span>
+    <button class="chip" id="aboutBtn" aria-label="Why voice? About The Coop"></button>
+    <button class="chip" id="setBtn" aria-label="Settings"></button>
+  </header>
+  <div class="ticker" id="ticker" aria-live="off"><span class="sp">Vapi</span><span class="msg">ready when you are</span><span class="dots" aria-hidden="true"><i data-s="Vapi"></i><i data-s="Deepgram"></i><i data-s="Exa"></i><i data-s="Jev"></i><i data-s="Manus"></i><i data-s="AdaL"></i></span></div>
+  <main id="main" aria-label="Now playing">
+    <article class="np" id="np" aria-live="off"></article>
+    <div class="cmds" id="cmds" aria-label="Things you can say"></div>
+    <section class="cap" aria-label="Live captions">
+      <div class="row"><span class="lab">coo:</span><span class="coo-says" id="cooSays" aria-live="polite"></span></div>
+      <div class="row"><span class="lab">you:</span><span class="you-said" id="youSaid">…</span></div>
+    </section>
+  </main>
+  <div class="dock">
+    <div class="microw">
+      <button class="side" id="stopBtn" aria-label="Stop talking (Escape)"></button>
+      <div style="display:grid;justify-items:center;gap:6px">
+        <button class="mic" id="mic" aria-label="Talk to Coo (space bar)"></button>
+        <div class="miclab" id="micLab">tap or press space, then talk</div>
+      </div>
+      <button class="side" id="typeBtn" aria-label="Type a command instead"></button>
+    </div>
+    <form class="typebox" id="typebox" hidden><input id="typeIn" aria-label="Type what you'd say" placeholder="Type what you'd say, like “next”" autocomplete="off"><button>send</button></form>
+    <nav class="rooms" id="rooms" aria-label="Rooms"></nav>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" tabindex="-1"></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="call" id="call" hidden role="dialog" aria-label="Outgoing call"></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem("coop_"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("coop_"+k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- doodles ---------- */
+const face=(x,y,k=1)=>`<circle class="ik" cx="${x-5*k}" cy="${y}" r="${1.8*k}"/><circle class="ik" cx="${x+5*k}" cy="${y}" r="${1.8*k}"/><ellipse class="ibl" cx="${x-9*k}" cy="${y+3.2*k}" rx="${2.7*k}" ry="${1.6*k}"/><ellipse class="ibl" cx="${x+9*k}" cy="${y+3.2*k}" rx="${2.7*k}" ry="${1.6*k}"/><path d="M${x-2.4*k} ${y+2.6*k}q${1.2*k} ${1.6*k} ${2.4*k} 0q${1.2*k} ${1.6*k} ${2.4*k} 0" style="stroke-width:1.6"/>`;
+const D={
+ lobby:`<path class="c" d="M8 24 24 9l16 15v17H8z"/><path class="k1" d="M20 41v-9a4 4 0 0 1 8 0v9z"/>`+face(24,22,.6),
+ feed:`<rect class="b1" x="10" y="9" width="22" height="32" rx="5" transform="rotate(-9 21 25)"/><rect class="c" x="15" y="8" width="22" height="32" rx="5"/><path d="M20 17h12M20 23h12M20 29h7"/>`,
+ news:`<path class="c" d="M8 10h26v28a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/><path d="M34 18h6v20a4 4 0 0 1-4 4"/><rect class="k1" x="13" y="15" width="16" height="9" rx="2"/><path d="M13 30h16M13 35h10"/>`,
+ learn:`<path class="c" d="M24 14c-5-4-11-4-17-2v25c6-2 12-2 17 2 5-4 11-4 17-2V12c-6-2-12-2-17 2z"/><path d="M24 14v25"/><path d="M11 19c3-1 6-1 9 0M11 25c3-1 6-1 9 0M28 19c3-1 6-1 9 0" style="stroke-width:1.5"/>`,
+ help:`<path class="p1" d="M24 41S8 31 8 19a8 8 0 0 1 16-3 8 8 0 0 1 16 3c0 12-16 22-16 22z"/><path d="M24 20v9M19.5 24.5h9" style="stroke-width:2.6"/>`,
+ circles:`<circle class="b1" cx="16" cy="20" r="8"/><circle class="k1" cx="32" cy="20" r="8"/><circle class="p1" cx="24" cy="32" r="8"/>`,
+ mic:`<rect class="c" x="17" y="6" width="14" height="24" rx="7"/><path d="M11 22a13 13 0 0 0 26 0M24 35v7M17 42h14"/>`,
+ stop:`<rect class="k1" x="12" y="12" width="24" height="24" rx="6"/>`,
+ keys:`<rect class="c" x="5" y="13" width="38" height="24" rx="5"/><path d="M11 20h2M17 20h2M23 20h2M29 20h2M35 20h2M11 26h2M35 26h2M16 31h16"/>`,
+ info:`<circle class="b1" cx="24" cy="24" r="17"/><path d="M24 22v11M24 15.5v.5" style="stroke-width:3"/>`,
+ gear:`<circle class="c" cx="24" cy="24" r="6"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.6 10.6l4.2 4.2M33.2 33.2l4.2 4.2M10.6 37.4l4.2-4.2M33.2 14.8l4.2-4.2"/>`,
+ heart:`<path class="k1" d="M24 40S8 30 8 19a8 8 0 0 1 16-3 8 8 0 0 1 16 3c0 11-16 21-16 21z"/>`,
+ star:`<path class="k1" d="M24 5l5 11.5 12.5 1.5-9.3 8.4 2.6 12.4L24 32.5l-10.8 6.3 2.6-12.4L6.5 18 19 16.5z"/>`,
+ shield:`<path class="p1" d="M24 5 9 11v11c0 10 7 17 15 21 8-4 15-11 15-21V11z"/><path d="M17 24l5 5 9-10" style="stroke-width:2.6"/>`,
+ bus:`<rect class="b1" x="8" y="8" width="32" height="28" rx="6"/><path d="M8 24h32M14 36v5M34 36v5"/><circle class="ik" cx="15" cy="30" r="2"/><circle class="ik" cx="33" cy="30" r="2"/>`,
+ book:`<path class="k1" d="M10 8h24a4 4 0 0 1 4 4v28H14a4 4 0 0 1-4-4z"/><path d="M10 36a4 4 0 0 1 4-4h24"/><path d="M18 16h12M18 21h9" style="stroke-width:1.6"/>`,
+ brief:`<rect class="p1" x="7" y="15" width="34" height="24" rx="4"/><path d="M18 15v-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4M7 25h34"/>`,
+ video:`<rect class="b1" x="6" y="12" width="28" height="24" rx="5"/><path class="k1" d="M34 20l9-5v18l-9-5z"/>`,
+ bot:`<path d="M24 14V9"/><circle class="k1" cx="24" cy="7" r="3"/><rect class="c" x="11" y="14" width="26" height="23" rx="8"/>`+face(24,25,.9)
+};
+const svg=n=>`<svg class="ic" viewBox="0 0 48 48" aria-hidden="true">${D[n]}</svg>`;
+const INK="#262c4a";
+const coo=(cls="")=>`<svg class="coo ${cls}" viewBox="0 0 80 80" aria-hidden="true"><g stroke="${INK}" stroke-linecap="round" stroke-linejoin="round">
+<path d="M33 69v5M47 69v5M30 74h6M44 74h6" stroke="#ff9a6a" stroke-width="2.4" fill="none"/>
+<path d="M13 50c0-17 12-30 27-30s27 13 27 30c0 13-11 21-27 21S13 63 13 50z" fill="#fffdf9" stroke-width="2.6"/>
+<path d="M17 51q6-9 14-4q-3 10-14 4z" fill="#c6f1d8" stroke-width="2"/>
+<path d="M63 51q-6-9-13-4q3 9 13 4z" fill="#c6f1d8" stroke-width="2"/>
+<path d="M14 38c0-5 4-8 7-8M66 38c0-5-4-8-7-8" stroke-width="2.4" fill="none"/>
+<rect x="9" y="36" width="9" height="13" rx="4" fill="#7fa6f4" stroke-width="2"/><rect x="62" y="36" width="9" height="13" rx="4" fill="#7fa6f4" stroke-width="2"/>
+<path d="M21 31q19-18 38 0" stroke-width="3" fill="none"/>
+<g class="eyes"><g class="blink"><circle cx="31" cy="44" r="2.7" fill="${INK}" stroke="none"/><circle cx="49" cy="44" r="2.7" fill="${INK}" stroke="none"/><circle cx="32" cy="43" r=".9" fill="#fff" stroke="none"/><circle cx="50" cy="43" r=".9" fill="#fff" stroke="none"/></g></g>
+<path d="M37.5 48h5l-2.5 3.2z" fill="#ffb27a" stroke-width="1.6"/>
+<ellipse cx="25" cy="50" rx="4.2" ry="2.5" fill="#ffa58a" stroke="none" opacity=".6"/><ellipse cx="55" cy="50" rx="4.2" ry="2.5" fill="#ffa58a" stroke="none" opacity=".6"/></g></svg>`;
+
+/* photo scenes (simple illustrations so sighted viewers see what's being described) */
+const SCENES={
+ beach:`<svg viewBox="0 0 320 180" aria-hidden="true"><rect width="320" height="180" fill="#ffd6bd"/><rect y="0" width="320" height="95" fill="#ffc29b"/><circle cx="250" cy="70" r="28" fill="#ffe29a" stroke="${INK}" stroke-width="2.5"/><path d="M0 100c40-12 80 12 120 0s80-12 120 0 60 8 80 2v78H0z" fill="#9cc7ff" stroke="${INK}" stroke-width="2.5"/><path d="M0 130c40-10 80 10 120 0s80-10 120 0 60 6 80 0" fill="none" stroke="#fff" stroke-width="3"/><path d="M0 160h320v20H0z" fill="#f6e3b8"/><g transform="translate(118 72)"><rect x="-6" y="-2" width="16" height="90" rx="8" fill="#ff8a5c" stroke="${INK}" stroke-width="2.5" transform="rotate(-18)"/><circle cx="30" cy="10" r="11" fill="#c08a64" stroke="${INK}" stroke-width="2.5"/><path d="M19 4c4-9 18-9 22 0" fill="#3a2a22" stroke="${INK}" stroke-width="2"/><path d="M22 22h16l4 30H18z" fill="#4a82ee" stroke="${INK}" stroke-width="2.5"/><path d="M22 28 8 40M38 28l12 10M22 52l-4 24M38 52l4 24" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/><path d="M26 13q4 4 8 0" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/></g></svg>`,
+ garden:`<svg viewBox="0 0 320 180" aria-hidden="true"><rect width="320" height="180" fill="#d2e2ff"/><rect y="120" width="320" height="60" fill="#b78a62"/><g stroke="${INK}" stroke-width="2.5" stroke-linecap="round"><path d="M60 125V50M140 125V40M220 125V55" fill="none"/><path d="M60 80c-20-8-28-24-24-30 12 0 22 10 24 30zM140 70c22-8 30-24 26-30-12 0-24 10-26 30zM220 85c-20-8-26-22-22-28 12 0 20 10 22 28z" fill="#9fdcb2"/><circle cx="70" cy="95" r="12" fill="#ff6a4d"/><circle cx="50" cy="108" r="10" fill="#ff6a4d"/><circle cx="150" cy="90" r="13" fill="#ff6a4d"/><circle cx="130" cy="104" r="11" fill="#ffb347"/><circle cx="230" cy="100" r="12" fill="#ff6a4d"/></g><g transform="translate(262 92)" stroke="${INK}" stroke-width="2.5"><circle cx="0" cy="0" r="11" fill="#e9c4a0"/><path d="M-13-6q13-14 26 0" fill="#fff"/><path d="M-9 12h18l3 34h-24z" fill="#9fdcb2"/><path d="M-4 3q4 3 8 0" fill="none" stroke-linecap="round"/></g></svg>`
+};
+
+/* ---------- content (samples) ---------- */
+const POSTS=[
+ {id:"p1",who:"Maya",init:"M",col:"var(--k1)",ago:"2 hours ago",pitch:1.25,rate:1.05,
+  voice:"Guess who finally stood up on a surfboard! Three tries, one mouthful of saltwater, zero regrets.",
+  scene:"beach",desc:"Maya is standing in shallow waves holding a bright orange surfboard, laughing. The sun is setting behind her.",
+  qa:[[/wear|cloth|outfit/,"She's wearing a blue rash guard and her hair is pulled back."],[/wet|water|soak/,"Yes, she's soaked. Her hair is dripping and the waves are up to her knees."],[/smil|happy|laugh|face|look/,"She's laughing with her mouth open, eyes squinting at the camera. She looks really happy."],[/background|behind|sky|sun/,"Behind her the sky is orange and pink with a low sun, and small waves are rolling in."],[/who|people|anyone|else/,"It's just Maya in the photo. You can hear someone cheering in her voice post, probably her friend Jo."],[/color|colour/,"Mostly warm colors: an orange board, a peach sky, and blue water."]]},
+ {id:"p2",who:"Grandpa Joe",init:"J",col:"var(--p1)",ago:"5 hours ago",pitch:.75,rate:.9,
+  voice:"First tomatoes of the season. I grew these by feel and by smell, and they're the sweetest ones yet.",
+  scene:"garden",desc:"Three tomato plants in a backyard garden, full of red and orange tomatoes. Joe stands beside them in a white sun hat.",
+  qa:[[/how many|count/,"There are about five ripe tomatoes you can see, four red and one orange."],[/wear|hat|cloth/,"He's wearing a white sun hat and a green shirt."],[/smil|happy|face/,"He's smiling, looking just to the side of the camera."],[/background|behind/,"Behind him there's a clear blue sky and a wooden fence."],[/color|colour/,"Bright red tomatoes, green leaves, and a blue sky."]]},
+ {id:"p3",who:"Priya",init:"P",col:"var(--b1)",ago:"yesterday",pitch:1.1,rate:1.1,
+  voice:"I got the job! Accessibility tester at a game studio. I'll literally be paid to tell them their menus don't talk. Celebrating with mango ice cream.",
+  scene:null},
+ {id:"p4",who:"Dev",init:"D",col:"var(--k1)",ago:"yesterday",pitch:.95,rate:1,
+  voice:"Hot tip: I put rubber bands on my spice jars. One band for cumin, two for chili. No more surprise curry.",
+  scene:null}
+];
+const NEWS=[
+ {t:"Students build a talking campus map",b:"A student team made a phone map that announces building entrances and ramps as you walk. It's free and open source.",src:["Campus Paper (sample)","Tech Desk (sample)"]},
+ {t:"Library adds free audio-described movie nights",b:"The main library will host monthly movie nights with audio description, so blind and low-vision guests can follow every scene. Snacks are free.",src:["City Paper (sample)","Library newsletter (sample)"]},
+ {t:"Transit agency tests talking bus-stop signs",b:"Ten bus stops downtown will announce the next arrivals out loud when you press a button. Riders can leave feedback in a short phone survey.",src:["Local TV (sample)","Transit agency notice (sample)"]}
+];
+const HELP=[
+ {k:"rides",ic:"bus",t:"Rides: paratransit",b:"Under the ADA, public transit agencies that run regular buses must also offer paratransit, a shared door-to-door ride, for people whose disability keeps them from using the regular bus. You apply through your local transit agency.",src:"ADA National Network (live version links the official page)"},
+ {k:"books",ic:"book",t:"Free audiobooks: Talking Books",b:"The Library of Congress's National Library Service lends talking books and players free by mail to people who are blind or can't read regular print. You can also download books to your phone.",src:"National Library Service, loc.gov/nls (live version links it)"},
+ {k:"jobs",ic:"brief",t:"Job training: vocational rehabilitation",b:"Every state has a vocational rehabilitation agency that helps people with disabilities train for and find work. In California it's the Department of Rehabilitation.",src:"California Department of Rehabilitation (live version links it)"}
+];
+const LEARN=[
+ {t:"Rubber-band labels for your kitchen",by:"from Dev",b:"Wrap one rubber band around the first jar, two around the second. Your fingers read the label in a second. Works for shampoo versus conditioner too."},
+ {t:"Find the bottom of a cup with your finger",by:"from Rosa",b:"When pouring a drink, rest your fingertip just inside the rim. When you feel the liquid, stop. Use cold drinks while you practice."}
+];
+const CIRCLES=[
+ {t:"New to vision loss",n:"38 members",posts:["Ana: Week two with my cane. Today I made it to the coffee shop alone.","Sam: The first months are hard. It gets better, I promise. Ask me anything."]},
+ {t:"Blind gamers",n:"112 members",posts:["Leo: Anyone tried the new audio racing game? The engine sounds tell you the turns."]}
+];
+const HELD={from:"unknown account",t:"Win a free phone! Send a $50 gift card to claim it.",why:"asked for gift cards, a common scam"};
+
+/* ---------- state ---------- */
+const S=Object.assign({rate:1,voice:"",hc:false,calm:false,fs:1,sr:false,expert:false},store.get("set",{}));
+let room="lobby",idx=0,liked=new Set(store.get("liked",[])),myPosts=store.get("mine",[]),awaiting=null,detailLvl=0;
+function applySet(){const r=document.documentElement;r.classList.toggle("hc",S.hc);r.classList.toggle("calm",S.calm);r.style.setProperty("--fs",S.fs);store.set("set",S)}
+applySet();
+
+/* ---------- sound + speech ---------- */
+let AC=null;
+function tone(kind){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime;const seq={like:[[880,.0],[1320,.08]],next:[[520,0],[700,.05]],back:[[700,0],[520,.05]],listen:[[660,0]],err:[[220,0],[180,.1]],post:[[660,0],[880,.08],[1100,.16]]}[kind]||[[600,0]];
+  seq.forEach(([f,d])=>{const o=AC.createOscillator(),g=AC.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(.18,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.18);o.connect(g).connect(AC.destination);o.start(t+d);o.stop(t+d+.2)})}catch(e){}}
+const synth=("speechSynthesis" in window)?speechSynthesis:null;let voices=[];
+function loadV(){if(synth)voices=synth.getVoices().filter(v=>/^en/i.test(v.lang))}
+if(synth){loadV();synth.onvoiceschanged=loadV}
+let speakTok=0;
+function say(text,opt={}){
+  const tok=++speakTok;$("#cooSays").textContent=text;
+  if(S.sr||!synth)return Promise.resolve();
+  synth.cancel();
+  return new Promise(res=>{const u=new SpeechSynthesisUtterance(text);u.rate=S.rate*(opt.rate||1)*(S.expert?1.15:1);u.pitch=opt.pitch||1;const v=voices.find(x=>x.name===S.voice);if(v)u.voice=v;
+    const c=document.querySelector("#logo .coo");if(c)c.classList.add("talking","talk");$("#mic").classList.add("talking");
+    const done=()=>{if(c)c.classList.remove("talk");$("#mic").classList.remove("talking");if(tok===speakTok)res()};u.onend=done;u.onerror=done;synth.speak(u)});
+}
+async function sayAll(parts){for(const p of parts){let [txt,opt]=Array.isArray(p)?p:[p,{}];opt=opt||{};if(opt.el)hl(opt.el);await say(txt,opt);if(opt.el)hl(null)}}
+function hl(sel){document.querySelectorAll(".reading").forEach(e=>e.classList.remove("reading"));if(sel){const e=document.querySelector(sel);if(e)e.classList.add("reading")}}
+function stopTalk(){speakTok++;if(synth)synth.cancel();hl(null);$("#mic").classList.remove("talking")}
+
+/* ---------- listening ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,live=false;
+function listen(){
+  if(!SR){openType();toast("voice input isn't available here, so type or tap instead");return}
+  stopTalk();
+  try{rec=new SR();rec.lang="en-US";rec.interimResults=true;rec.maxAlternatives=1}catch(e){openType();return}
+  live=true;tick("Vapi","listening");$("#mic").classList.add("live");$("#micLab").textContent="listening…";tone("listen");
+  rec.onresult=e=>{const r=e.results[e.results.length-1];$("#youSaid").textContent=r[0].transcript;if(r.isFinal){handle(r[0].transcript)}};
+  rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){openType();toast("microphone blocked here, so type or tap instead")}};
+  rec.onend=()=>{live=false;$("#mic").classList.remove("live");$("#micLab").textContent="tap or press space, then talk"};
+  try{rec.start()}catch(e){}
+}
+function openType(){$("#typebox").hidden=false;$("#typeIn").focus()}
+
+/* ---------- rendering ---------- */
+const ROOMS=[["lobby","lobby"],["feed","feed"],["news","news"],["learn","learn"],["help","help"],["circles","circles"]];
+function renderRooms(){$("#rooms").innerHTML=ROOMS.map(([k,l])=>`<button data-room="${k}" ${room===k?'aria-current="page"':""}>${svg(k)}${l}</button>`).join("")}
+function allPosts(){return myPosts.concat(POSTS)}
+const CMDS={
+ lobby:["play my feed","what's new?","send a photo to grandma","go to news","help"],
+ feed:["play it","describe the photo","like it","reply","next","make a video","post something"],
+ news:["read it","simpler","more like this","sources"],
+ learn:["read it","next","go to feed"],
+ help:["rides","free audiobooks","job training","do it for me"],
+ circles:["read it","next","what got blocked?"]
+};
+function renderCmds(){$("#cmds").innerHTML=(CMDS[room]||[]).map(c=>`<button class="cmd" data-say="${esc(c)}">${esc(c)}</button>`).join("")}
+function render(){
+  renderRooms();renderCmds();const np=$("#np");let h=`<span class="tape"></span>`;
+  const label={lobby:"lobby",feed:"feed",news:"news",learn:"learn",help:"help",circles:"circles"}[room];
+  if(room==="lobby"){
+    const n=allPosts().length;
+    h+=`<div class="room">${svg("lobby")}lobby</div><div class="welcome">${coo()}<h1>the coop</h1><p>Social media you can hear. Tap the mic and say “what's new?”</p></div>
+    <ul class="list"><li>${svg("feed")}<div>${n} posts from friends<small>say “go to feed”</small></div></li><li>${svg("news")}<div>${NEWS.length} stories in the news<small>say “go to news”</small></div></li><li>${svg("circles")}<div>2 circles talking today<small>say “go to circles”</small></div></li><li>${svg("mic")}<div>Everyone mode: hands-free<small>say “play my feed” and cook, walk or rest your eyes</small></div></li></ul><p class="note" style="text-align:center">Or call The Coop from any phone: (555) 010-COOP (sample)</p>`;
+  }
+  if(room==="feed"){
+    const L=allPosts(),p=L[idx%L.length];
+    h+=`<div class="room">${svg("feed")}feed<span class="pos">${idx%L.length+1} of ${L.length}</span></div>
+    <div class="who"><span class="av" style="background:${p.col}">${esc(p.init)}</span><div><b>${esc(p.who)}</b><small>voice post · ${esc(p.ago)}</small></div></div>
+    <p class="body" id="v-body">“${esc(p.voice)}”</p>
+    ${p.scene?`<div class="scene">${SCENES[p.scene]}<span class="tag">photo · described</span></div><p class="desc" id="v-desc"><b>what's in the photo</b>${esc(p.desc)}</p>`:""}
+    ${p.video?`<p class="desc"><b>share video</b>A 20-second captioned video of this post is ready to share (sample).</p>`:""}
+    <div class="meta"><span class="pill ${liked.has(p.id)?"on":""}">${svg("heart")}${liked.has(p.id)?"you liked this":"like"}</span>${(p.replies||[]).map(r=>`<span class="pill">${esc(r)}</span>`).join("")}</div>`;
+  }
+  if(room==="news"){const s=NEWS[idx%NEWS.length];
+    h+=`<div class="room">${svg("news")}news<span class="pos">${idx%NEWS.length+1} of ${NEWS.length}</span></div><h2 id="v-t">${esc(s.t)}</h2><p class="body" id="v-body">${esc(s.b)}</p><div class="meta">via ${s.src.map(x=>`<span class="pill">${esc(x)}</span>`).join("")}</div>`}
+  if(room==="learn"){const s=LEARN[idx%LEARN.length];
+    h+=`<div class="room">${svg("learn")}learn<span class="pos">${idx%LEARN.length+1} of ${LEARN.length}</span></div><h2 id="v-t">${esc(s.t)}</h2><div class="meta">community tip ${esc(s.by)}</div><p class="body" id="v-body">${esc(s.b)}</p>`}
+  if(room==="help"){
+    const cur=HELP.find(x=>x.k===helpKey);
+    h+=`<div class="room">${svg("help")}help</div>`+(cur?`<h2 id="v-t">${esc(cur.t)}</h2><p class="body" id="v-body">${esc(cur.b)}</p><div class="meta">source <span class="pill">${esc(cur.src)}</span></div>`
+      :task?`<h2>doing it for you</h2><ul class="list">${task.map(s=>`<li>${svg(s.done?"shield":"bot")}<div>${esc(s.t)}</div></li>`).join("")}</ul>`
+      :`<h2>what do you need help with?</h2><ul class="list">${HELP.map(x=>`<li>${svg(x.ic)}<div>${esc(x.t)}<small>say “${x.k==="books"?"free audiobooks":x.k==="jobs"?"job training":"rides"}”</small></div></li>`).join("")}<li>${svg("bot")}<div>Do it for me<small>say “do it for me: refill my prescription”</small></div></li></ul>`);
+  }
+  if(room==="circles"){const c=CIRCLES[idx%CIRCLES.length];
+    h+=`<div class="room">${svg("circles")}circles<span class="pos">${idx%CIRCLES.length+1} of ${CIRCLES.length}</span></div><h2 id="v-t">${esc(c.t)}</h2><div class="meta">${esc(c.n)} · safe space</div><ul class="list">${c.posts.map((p,i)=>`<li id="v-p${i}">${svg("circles")}<div>${esc(p)}</div></li>`).join("")}</ul>
+    <p class="desc"><b>held by coo</b>1 post was held before anyone heard it: it ${HELD.why}.</p>`}
+  np.innerHTML=h;np.style.animation="none";void np.offsetWidth;np.style.animation="";
+}
+let helpKey=null,task=null;
+
+/* ---------- actions ---------- */
+function go(r,silent){room=r;idx=0;helpKey=null;task=null;detailLvl=0;render();tone("next");if(!silent)announce()}
+function announce(){
+  if(room==="lobby")return lobbyIntro();
+  if(room==="feed")return playPost();
+  if(room==="news")return readNews();
+  if(room==="learn")return readLearn();
+  if(room==="help")return say("Help. I can find rides, free audiobooks, job training, or do a website task for you. What do you need?");
+  if(room==="circles")return readCircle();
+}
+function lobbyIntro(){const n=allPosts().length;return say(`Welcome back. You have ${n} posts from friends, ${NEWS.length} stories in the news, and 2 circles talking today. Where do you want to go?`)}
+function cur(){const L=allPosts();return L[idx%L.length]}
+async function playPost(){const p=cur();tick("Deepgram",`${p.who}'s voice post, read in ${p.who.split(' ')[0]}'s voice`);await say(`${p.who}, ${p.ago}.`);await say(p.voice,{pitch:p.pitch,rate:p.rate,el:"#v-body"});if(p.scene)await say("There's a photo. Say describe it to hear what's in it.")}
+function describe(){const p=cur();if(!p.scene)return say("This post doesn't have a photo.");tick("Vision","described the photo; poster can edit it");detailLvl=1;return sayAll([[p.desc,{el:"#v-desc"}],["Ask me anything about it, like what she's wearing, or what's in the background."]])}
+function askPhoto(q){const p=cur();if(!p.scene)return false;const a=p.qa.find(([re])=>re.test(q));if(!a)return false;tick("Vision","answered a follow-up about the photo");say(a[1]);return true}
+function readNews(){const s=NEWS[idx%NEWS.length];tick("Exa",`found this story · ${s.src.length} sources`);return sayAll([[s.t,{el:"#v-t"}],[s.b,{el:"#v-body"}],[`Sources: ${s.src.map(x=>x.replace(" (sample)","")).join(" and ")}.`]])}
+function readLearn(){const s=LEARN[idx%LEARN.length];return sayAll([[`${s.t}, ${s.by}.`,{el:"#v-t"}],[s.b,{el:"#v-body"}]])}
+async function readCircle(){const c=CIRCLES[idx%CIRCLES.length];await say(`${c.t} circle, ${c.n}.`,{el:"#v-t"});for(let i=0;i<c.posts.length;i++)await say(c.posts[i],{el:"#v-p"+i})}
+function next(d=1){const len={feed:allPosts().length,news:NEWS.length,learn:LEARN.length,circles:CIRCLES.length}[room];if(!len){say("Nothing to skip here. Try going to the feed.");return}
+  idx=(idx+d+len)%len;detailLvl=0;render();tone(d>0?"next":"back");announce()}
+function like(el){if(room!=="feed")return say("Go to the feed to like a post.");const p=cur();liked.add(p.id);store.set("liked",[...liked]);render();tone("like");burst(el||$("#mic"),"heart");say(`Liked ${p.who}'s post.`)}
+function reply(text){if(room!=="feed")return say("Go to the feed to reply to a post.");const p=cur();if(!text){awaiting="reply";return say(`What do you want to say to ${p.who}?`).then(()=>{if(SR&&!S.sr)listen()})}
+  tick("Jev","checked your reply: safe to send");p.replies=(p.replies||[]).concat(["you: "+text]);render();tone("post");say(`Sent to ${p.who}: ${text}`);
+  setTimeout(()=>{if(room==="feed"&&cur()===p){p.replies.push(p.who.split(" ")[0]+": aww, thank you!");render();tone("like");say(`${p.who} replied: aww, thank you!`,{pitch:p.pitch})}},4500)}
+function post(text){if(!text){awaiting="post";return say("Okay, say your post after the chime.").then(()=>{if(SR&&!S.sr)listen()})}
+  tick("Jev","checked your post: safe to share");const p={id:"m"+Date.now(),who:"You",init:"Y",col:"var(--p1)",ago:"just now",pitch:1,rate:1,voice:text,scene:null};myPosts.unshift(p);store.set("mine",myPosts);room="feed";idx=0;render();tone("post");confettiBurst();
+  say("Posted to your friends. Want a captioned video of it to share on Instagram? Say make a video.")}
+function makeVideo(){const p=cur();if(room!=="feed")return say("Go to a post in the feed first.");p.video=true;render();tick("AdaL","made a 20-second captioned share video");say("Making a 20-second captioned video of this post. In the live version, AdaL makes it. It's ready to share.")}
+async function doForMe(what){tick("Manus","opening the website for you");room="help";helpKey=null;task=[{t:`Understood: ${what}`},{t:"Opening the pharmacy website (sample)"},{t:"Found your refill: 1 prescription, ready Thursday"}];render();
+  await say(`On it: ${what}. I'm opening the website for you.`);await say("I found one refill, ready Thursday. Should I place it? Say yes or no.");awaiting="confirm"}
+function confirmTask(yes){awaiting=null;if(!task)return;if(yes){tick("Jev","you confirmed, so Manus finished the task");task.push({t:"Refill placed (sample)",done:true});render();tone("post");say("Done. Your refill is placed. I'll remind you Thursday.")}else{task=null;render();say("Okay, I didn't place it.")}}
+function showHelp(k){helpKey=k;task=null;render();const h=HELP.find(x=>x.k===k);tick("Exa","found an official source");sayAll([[h.t,{el:"#v-t"}],[h.b,{el:"#v-body"}],[`Source: ${h.src.replace(/ \(.*\)/,"")}.`]])}
+function whereAmI(){const pos={feed:`post ${idx%allPosts().length+1} of ${allPosts().length}, from ${cur().who}`,news:`story ${idx%NEWS.length+1} of ${NEWS.length}`,learn:`tip ${idx%LEARN.length+1}`,circles:`the ${CIRCLES[idx%CIRCLES.length].t} circle`}[room];
+  say(`You're in ${room}${pos?", on "+pos:""}.`)}
+let feedRun=0;
+async function playFeed(){const run=++feedRun;go("feed",true);await say(`Playing your feed. ${allPosts().length} posts. Say stop anytime.`);
+  for(let i=0;i<allPosts().length;i++){if(run!==feedRun)return;idx=i;render();await playPost();if(run!==feedRun)return;await new Promise(r=>setTimeout(r,500))}
+  if(run===feedRun)say("That's everything from your friends. You're all caught up.")}
+function moreLike(){if(room!=="news")go("news",true);tick("Exa","found a similar story with find-similar");idx=(idx+1)%NEWS.length;render();say("Here's a similar story.").then(readNews)}
+async function callGrandma(){const c=$("#call");c.hidden=false;tick("Vapi","calling Grandma Rosa's phone");
+  c.innerHTML=`<div class="ph">R</div><h3>calling grandma rosa</h3><p class="st" id="cst">ringing her landline…</p><p id="ctx"></p><button class="btn" id="cEnd">end call</button>`;
+  const set=(a,b)=>{$("#cst").textContent=a;$("#ctx").textContent=b||""};let alive=true;$("#cEnd").onclick=()=>{alive=false;c.hidden=true;stopTalk()};
+  await new Promise(r=>setTimeout(r,1800));if(!alive)return;
+  set("connected","");await say("Hi Rosa, it's Coo from The Coop. Alex just posted a photo for you from San Francisco.");if(!alive)return;
+  set("coo is describing the photo","Alex is on a stage, grinning, wearing a black hoodie, with a crowd behind him.");await say("He's on a stage, grinning, in a black hoodie, with a crowd behind him. Do you want to say something back?");if(!alive)return;
+  set("rosa replies","“Tell him I'm proud of him.”");await say("Tell him I'm proud of him.",{pitch:.8,rate:.9});if(!alive)return;
+  tick("Deepgram","transcribed Rosa's reply");myPosts.unshift({id:"g"+Date.now(),who:"Grandma Rosa",init:"R",col:"var(--k1)",ago:"just now",pitch:.8,rate:.9,voice:"Tell him I'm proud of him.",scene:null});store.set("mine",myPosts);
+  set("posted to the feed","Rosa's reply is now in Alex's feed.");await say("Got it. I posted your message for Alex. Bye, Rosa!");
+  setTimeout(()=>{c.hidden=true;go("feed",true);render();tone("post");say("New voice reply from Grandma Rosa: Tell him I'm proud of him.",{pitch:.8})},900)}
+function helpCmds(){say("You can say: go to feed, news, learn, help, or circles. Next. Back. Play it. Describe the photo. Like it. Reply. Post something. Faster or slower. Where am I. Or stop.")}
+
+/* ---------- understanding what was said (the live version uses Vapi + Jev for this) ---------- */
+function handle(raw){
+  const q=raw.toLowerCase().trim().replace(/[.!?]+$/,"");$("#youSaid").textContent=raw;if(!q)return;
+  if(awaiting==="reply"){awaiting=null;return reply(raw)}
+  if(awaiting==="post"){awaiting=null;return post(raw)}
+  if(awaiting==="confirm"){if(/^(yes|yeah|yep|sure|do it|confirm|place it)/.test(q))return confirmTask(true);if(/^(no|nope|cancel|don't)/.test(q))return confirmTask(false)}
+  let m;
+  if(/^(stop|quiet|shush|pause)/.test(q)){feedRun++;return stopTalk()}
+  if(/play (my )?feed|play everything|read my feed/.test(q))return playFeed();
+  if(/more like (this|that)|similar/.test(q))return moreLike();
+  if(/grandma|call (rosa|her)|send (it|this|a photo) to/.test(q))return callGrandma();
+  if(/faster|speed up/.test(q)){S.rate=Math.min(2.2,+(S.rate+.25).toFixed(2));applySet();return say(`Faster. Speed ${S.rate}.`)}
+  if(/slower|slow down/.test(q)){S.rate=Math.max(.6,+(S.rate-.25).toFixed(2));applySet();return say(`Slower. Speed ${S.rate}.`)}
+  if(/where am i/.test(q))return whereAmI();
+  if(/^(help|what can i say|commands)/.test(q)&&room!=="help")return helpCmds();
+  if((m=q.match(/(?:go to|open|take me to|show me)\s+(?:the\s+)?(lobby|home|feed|news|learn|learning|help|circles?|groups?)/))||(m=q.match(/^(lobby|home|feed|news|learn|circles)$/))){
+    const r={home:"lobby",learning:"learn",circle:"circles",group:"circles",groups:"circles"}[m[1]]||m[1];return go(r)}
+  if(/what'?s new|catch me up|anything new/.test(q))return go("feed");
+  if((m=q.match(/^(?:do it for me|can you)[:,]?\s*(.+)/))||(m=q.match(/(refill (?:my )?prescription|pay (?:my )?bill|check (?:my )?bill|order groceries)/)))return doForMe(m[1]);
+  if(/^(next|skip|keep going|swipe|scroll( down| up)?)/.test(q))return next(1);
+  if(/^(back|previous|go back|last one)/.test(q))return next(-1);
+  if(/^(play|read|repeat|again|play it|read it)/.test(q))return announce();
+  if(/describe|what'?s in (the )?(photo|picture)|what does it look like/.test(q)){room!=="feed"&&go("feed",true);return describe()}
+  if(/^(like|love|heart)/.test(q))return like();
+  if((m=q.match(/^(?:reply|say|tell (?:her|him|them))[:,]?\s*(.*)/)))return reply(raw.slice(raw.toLowerCase().indexOf(m[1])).trim()||"");
+  if((m=q.match(/^(?:post|share)[:,]?\s*(.*)/))){const t=m[1].replace(/^something\s*/,"");return post(t?raw.slice(-t.length):"")}
+  if(/make (a )?video/.test(q))return makeVideo();
+  if(/simpler|explain/.test(q)&&room==="news")return say("In short: "+NEWS[idx%NEWS.length].b.split(". ")[0]+".");
+  if(/source/.test(q)&&room==="news")return say(`This story comes from ${NEWS[idx%NEWS.length].src.map(x=>x.replace(" (sample)","")).join(" and ")}. In the live version, every source is a real link.`);
+  if(/ride|paratransit|transport|bus/.test(q)){room="help";return showHelp("rides")}
+  if(/audiobook|talking book|book/.test(q)){room="help";return showHelp("books")}
+  if(/job|work|training/.test(q)){room="help";return showHelp("jobs")}
+  if(/block|held|scam/.test(q)){tick("Jev","held a scam post in Circles");room!=="circles"&&go("circles",true);return say(`I held one post from an ${HELD.from}. It said: win a free phone, send a gift card. It ${HELD.why}, so nobody heard it.`)}
+  if(room==="feed"&&askPhoto(q))return;
+  tone("err");say(`I heard “${raw}”. Try saying next, describe it, like it, or go to news. Say help for the full list.`);
+}
+
+/* ---------- sponsor ticker ---------- */
+const used=new Set();
+function tick(sp,msg){used.add(sp);const t=$("#ticker");t.querySelector(".sp").textContent=sp;t.querySelector(".msg").textContent=msg;t.querySelectorAll(".dots i").forEach(i=>i.classList.toggle("on",used.has(i.dataset.s)));t.classList.remove("flash");void t.offsetWidth;t.classList.add("flash")}
+/* ---------- ui bits ---------- */
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2400)}
+function burst(el,ic){if(S.calm)return;const r=el.getBoundingClientRect(),b=document.createElement("span");b.className="burst";b.style.left=r.left+r.width/2+"px";b.style.top=r.top+"px";b.innerHTML=svg(ic);document.body.appendChild(b);setTimeout(()=>b.remove(),950)}
+function confettiBurst(){if(S.calm)return;for(let i=0;i<6;i++)setTimeout(()=>{const b=document.createElement("span");b.className="burst";b.style.left=(20+Math.random()*60)+"%";b.style.top=(40+Math.random()*30)+"%";b.innerHTML=svg(i%2?"star":"heart");document.body.appendChild(b);setTimeout(()=>b.remove(),950)},i*90)}
+function openSheet(html){const s=$("#sheet");s.innerHTML=`<button class="chip x" data-close aria-label="Close">✕</button>`+html;s.classList.add("on");$("#scrim").classList.add("on");setTimeout(()=>s.focus({preventScroll:true}),50)}
+function closeSheet(){$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}
+$("#scrim").onclick=closeSheet;$("#sheet").addEventListener("click",e=>{if(e.target.closest("[data-close]"))closeSheet()});
+function about(){openSheet(`<h3>why voice?</h3><p class="note">The Coop is social media you can hear. Here's why voice comes first.</p>
+<div class="why">
+<div><b>photos finally talk</b><p>Most photos posted online have no description, so screen reader users just hear “image.” Here every photo is described, and you can ask follow-up questions.</p></div>
+<div><b>no endless scrolling by ear</b><p>Swiping through a visual feed with a screen reader is slow and tiring. Here you say “next,” “like it,” “reply,” and you're done in two minutes.</p></div>
+<div><b>works on any phone</b><p>The live version has a phone number too, so people without a smartphone, or who find apps hard, can just call in.</p></div>
+<div><b>made for people who lost their sight later in life</b><p>Many older adults never learned a screen reader. Talking is something everyone already knows how to do.</p></div>
+<div><b>a safe room</b><p>Circles are small support groups. Coo holds scams and harassment before anyone hears them.</p></div>
+<div><b>sighted friends can join</b><p>This screen shows big captions of everything, and any post can become a captioned video for Instagram.</p></div>
+</div>
+<p class="note">Built to work alongside screen readers like VoiceOver and TalkBack, not to replace them. The real version would be designed and tested with blind and low-vision users.</p>
+<span class="lbl" style="font-family:var(--head);font-size:24px">keyboard</span>
+<div class="kbd"><kbd>Space</kbd><span>talk to Coo</span><kbd>→ / ←</kbd><span>next / back</span><kbd>D</kbd><span>describe the photo</span><kbd>L</kbd><span>like</span><kbd>R</kbd><span>reply</span><kbd>W</kbd><span>where am I</span><kbd>H</kbd><span>what can I say</span><kbd>Esc</kbd><span>stop</span></div>`)}
+function settings(){openSheet(`<h3>settings</h3><div class="set">
+<label>High contrast<small>Yellow and white on black</small><input type="checkbox" id="sHc" ${S.hc?"checked":""}></label>
+<div class="r"><span>Text size<small>${Math.round(S.fs*100)}%</small></span><input type="range" id="sFs" min="1" max="1.6" step="0.1" value="${S.fs}" aria-label="Text size"></div>
+<div class="r"><span>Coo's speed<small>${S.rate}×</small></span><input type="range" id="sRate" min="0.6" max="2.2" step="0.1" value="${S.rate}" aria-label="Coo's speaking speed"></div>
+<div class="r"><span>Voice<small>From your device</small></span><select id="sVoice" aria-label="Voice"><option value="">Default</option>${voices.map(v=>`<option ${v.name===S.voice?"selected":""}>${esc(v.name)}</option>`).join("")}</select></div>
+<label>Expert mode<small>Shorter, faster replies</small><input type="checkbox" id="sEx" ${S.expert?"checked":""}></label>
+<label>Use my screen reader<small>Coo stays quiet and your screen reader reads the captions</small><input type="checkbox" id="sSr" ${S.sr?"checked":""}></label>
+<label>Calm mode<small>No animations</small><input type="checkbox" id="sCalm" ${S.calm?"checked":""}></label>
+</div><p class="note">Prototype: posts, news and help answers are samples. The live version runs on Vapi, Deepgram and Exa with real sources.</p>`);
+  const s=$("#sheet");s.onchange=e=>{const id=e.target.id;if(id==="sHc")S.hc=e.target.checked;if(id==="sEx")S.expert=e.target.checked;if(id==="sSr")S.sr=e.target.checked;if(id==="sCalm")S.calm=e.target.checked;if(id==="sVoice")S.voice=e.target.value;applySet()};
+  s.oninput=e=>{const id=e.target.id;if(id==="sFs"){S.fs=+e.target.value;applySet();e.target.previousElementSibling.querySelector("small").textContent=Math.round(S.fs*100)+"%"}if(id==="sRate"){S.rate=+e.target.value;applySet();e.target.previousElementSibling.querySelector("small").textContent=S.rate+"×"}}}
+
+/* ---------- wiring ---------- */
+$("#logo").innerHTML=coo()+"the coop";
+$("#aboutBtn").innerHTML=svg("info")+"why voice";$("#setBtn").innerHTML=svg("gear");
+$("#mic").innerHTML=svg("mic");$("#stopBtn").innerHTML=svg("stop");$("#typeBtn").innerHTML=svg("keys");
+$("#mic").onclick=()=>{if(live&&rec){rec.stop();return}listen()};
+$("#stopBtn").onclick=stopTalk;
+$("#typeBtn").onclick=()=>{const t=$("#typebox");t.hidden=!t.hidden;if(!t.hidden)$("#typeIn").focus()};
+$("#typebox").onsubmit=e=>{e.preventDefault();const v=$("#typeIn").value;$("#typeIn").value="";handle(v)};
+$("#aboutBtn").onclick=about;$("#setBtn").onclick=settings;
+$("#rooms").addEventListener("click",e=>{const b=e.target.closest("[data-room]");if(b)go(b.dataset.room)});
+$("#cmds").addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(!b)return;const t=b.dataset.say;if(t==="like it")return like(b);handle(t)});
+document.addEventListener("click",e=>{if(e.target.closest(".coo")){say("Coo! I'm here. Tap the mic and talk to me.")}});
+document.addEventListener("keydown",e=>{
+  if(e.target.closest("input,select,textarea"))return;
+  if($("#sheet").classList.contains("on")){if(e.key==="Escape")closeSheet();return}
+  const k=e.key;
+  if(k===" "){e.preventDefault();live&&rec?rec.stop():listen()}
+  else if(k==="ArrowRight"||k==="j")next(1);else if(k==="ArrowLeft"||k==="k")next(-1);
+  else if(k==="d")handle("describe it");else if(k==="l")like();else if(k==="r")handle("reply");else if(k==="w")whereAmI();else if(k==="h")helpCmds();
+  else if(k==="Escape")stopTalk();
+});
+let raf=0,lastE;document.addEventListener("pointermove",e=>{lastE=e;if(raf||S.calm)return;raf=requestAnimationFrame(()=>{raf=0;const r=document.documentElement.style;r.setProperty("--ex",((lastE.clientX/innerWidth)*2-1).toFixed(2));r.setProperty("--ey",((lastE.clientY/innerHeight)*2-1).toFixed(2))})});
+
+render();
+$("#cooSays").textContent="Hi, I'm Coo. Tap the mic, or press space, and say “what's new?”";
+})();
+</script>
+</body>
+</html>
