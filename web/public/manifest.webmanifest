@@ -1,0 +1,14 @@
+{
+  "name": "The Coop: social media you can hear",
+  "short_name": "The Coop",
+  "description": "A voice-first social app for blind, low-vision and older people. Friends' audio journeys, real news with sources, and help, all by voice.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f3e2",
+  "theme_color": "#cfe3f0",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

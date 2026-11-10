@@ -1,116 +1,122 @@
 <div align="center">
 
-<img src="docs/coo.svg" width="140" alt="Coo, a round white pigeon wearing blue headphones">
+<img src="docs/icon.png" width="128" alt="The Coop app icon: Coo, a round white pigeon wearing blue headphones">
 
-# the coop
+# The Coop
 
-### social media you can hear 🎧
+### Social media you can hear.
 
-**Built first for blind, low-vision and older people. Better for everyone, like curb cuts.**
+**A voice-first social network built for blind, low-vision and older people.**
+Friends share *audio journeys* of where they went and how it felt. Coo, a friendly pigeon, reads them to you in their own voices, finds real news with sources, and helps you get things done, all by talking.
 
-[**▶ Try the live app**](https://thecoop-kappa.vercel.app) · [How to demo it](#-try-it-in-60-seconds) · [How it works](#-how-it-works) · [Run it yourself](#-run-it-locally)
+**[Open the app](https://thecoop-kappa.vercel.app)** · [Listen to a journey](#listen-first) · [Try it in 60 seconds](#try-it-in-60-seconds) · [How it works](#how-it-works) · [Run it yourself](#run-it-locally)
 
-![Vapi](https://img.shields.io/badge/voice-Vapi-5b5bd6) ![Deepgram](https://img.shields.io/badge/ears%20%26%20voices-Deepgram-13ef93?labelColor=262c4a) ![Exa](https://img.shields.io/badge/sources-Exa-1f40ed) ![TypeSafe Jev](https://img.shields.io/badge/decisions-TypeSafe%20Jev-262c4a) ![Manus](https://img.shields.io/badge/web%20hands-Manus-e8642c) ![AdaL](https://img.shields.io/badge/share%20clips-AdaL-ffa58a?labelColor=262c4a) ![Claude](https://img.shields.io/badge/photo%20vision-Claude-d97757)
+<img src="docs/qr.png" width="180" alt="QR code that opens The Coop at thecoop-kappa.vercel.app">
 
-<img src="docs/hero.jpg" alt="Four screens of The Coop: a friend's voice post with a photo, a spoken photo description, a scam post held in a support circle, and Coo phoning Grandma Rosa">
+*Scan to open The Coop on your phone, then add it to your home screen. It installs like an app.*
+
+<img src="docs/hero.jpg" alt="Four phone screens of The Coop: Maya's audio journey from Ocean Beach, a real news story about a Braille trail, VTA paratransit help for San Jose, and a scam post held in a support circle">
 
 </div>
 
 ---
 
-## 🙈 Close your eyes. You're our user now.
+## Listen first
 
-Scroll your feed. Every photo just says *"image."* Every "like" button is a hunt. That's social media for 7 million Americans with vision loss, and for millions of older adults who never learned a screen reader.
+This README is written to work with a screen reader. Every image has a description, and here's the heart of the app as sound. These are real clips from the app, each friend in their own voice:
 
-**The Coop is a social network you talk to.** Coo, a friendly pigeon, reads you your friends' posts *in their own voices*, describes every photo and answers your questions about it, reads the news with real sources, holds scams before you ever hear them, and can even phone Grandma's landline to share a photo.
+- 🌊 [**Maya at Ocean Beach, 6 a.m.**](docs/audio/maya-ocean-beach.mp3) *"The waves come in sets of three: boom, hiss, quiet."*
+- 🏮 [**Lena at the lantern festival**](docs/audio/lena-lantern-festival.mp3) *"Paper rustling overhead like a thousand quiet birds."*
+- 🦉 [**Omar's night hike**](docs/audio/omar-night-owl.mp3) *"My guide dog froze, and right above us came a long, breathy screech."*
+- 🍅 [**Grandpa Joe's garden by feel**](docs/audio/grandpa-joe-garden.mp3) *"I find the tomato plants by smell before I touch them."*
 
-No screen required. No app required. Just say *"what's new?"*
+## Why we built it
 
-<div align="center">
-<img src="docs/demo.gif" width="320" alt="Animated tour: lobby, a voice post, a photo description, a reply, the news, a held scam, a web task, and a call to Grandma">
-</div>
+Most social media is a wall of pictures. With a screen reader, a photo usually just says *"image,"* and scrolling a feed by swiping is slow and tiring. Millions of people lose their sight later in life and never learn a screen reader at all.
 
-## 🎤 Try it in 60 seconds
+So we flipped it. **On The Coop, the post *is* the sound.** Friends don't post photos with captions. They post journeys: where they went, what it sounded like, what it smelled like, how it felt. A photo is an optional extra for sighted friends, and Coo will describe it if you ask.
 
-Open the app in **Chrome**, tap the big blue mic (or press **space**), and say:
+Talking is something everyone already knows how to do. That's the whole interface.
 
-| Say this | What happens |
+## Try it in 60 seconds
+
+Open the app in **Chrome**, then tap the big mic or press the **space bar**. Coo says hi. Then just talk:
+
+| Say | What happens |
 |---|---|
-| **"What's new?"** | Coo says who it's from, then Maya's post plays **in Maya's own voice** 🗣️ |
-| **"Describe the photo"** | Coo looks at the *real* image and describes it |
-| **"What color is the water?"** | Ask anything. Coo answers about that exact photo |
-| **"Next"** | Jumps to the next friend, even while someone is still talking |
-| **"Like it"** · **"Reply: you're braver than me"** | 💛 a chime, and it's on the post, checked for safety first |
-| **"Go to news"** · **"More like this"** | One story at a time, outlet named out loud |
-| **"Go to circles"** · **"What got blocked?"** | 🛡️ A scam post was held, so nobody had to hear it |
-| **"Send this to Grandma"** | ☎️ Coo phones Grandma, describes the photo, and posts her spoken reply back |
-| **"Play my feed"** | Everyone mode: your feed as a hands-free podcast while you cook or walk |
+| **"What's new?"** | Coo says who it's from, then Maya's journey plays **in her own voice** |
+| **"Next"** | Skips to the next friend, even in the middle of a post |
+| **"Like it"** · **"Reply: that sounds amazing"** | A chime, and it's on the post. Every reply is checked for scams first |
+| **"Describe the photo"** | If a friend shared one, Coo looks at the real image and describes it |
+| **"Go to news"** | One **real** story from the last 48 hours, with the outlet named out loud |
+| **"More like this"** | Similar recent stories |
+| **"How do I get rides in San Jose?"** | Official sources only: VTA ACCESS paratransit, from vta.gov |
+| **"Free audiobooks"** | The Library of Congress talking-books service |
+| **"Teach me to cook without sight"** | A beginner lesson, explained as three simple steps |
+| **"Go to circles"** · **"What got blocked?"** | Small support groups, with scams held before anyone hears them |
+| **"Play my feed"** | Hands-free mode: your whole feed, like a podcast |
+| **"Where am I?"** · **"Help"** · **"Stop"** | Always available |
 
-No mic? Tap the ⌨️ button and type the same words, or use the chips on screen. Every voice command also works from the keyboard.
+No microphone? Every voice command also works by typing, by tapping the chips on screen, or from the keyboard.
 
-> **Heads up for judges:** the live site's voice runs on our team laptop through a tunnel. If it's offline, The Coop switches to its **backup voice** (your browser's) with sample data, so you can still click through everything.
+## Built for blind and low-vision people, first
 
-## ✨ What makes it different
+- **Ears first.** Everything Coo shows, Coo says. Every screen has big, live captions too.
+- **One voice at a time.** Coo goes silent while a friend's journey plays, so voices never talk over each other.
+- **Works with your screen reader.** Turn on *"use my screen reader"* and Coo stays quiet while VoiceOver or TalkBack reads the live captions.
+- **Keyboard everything:** <kbd>Space</kbd> talk · <kbd>→</kbd> next · <kbd>←</kbd> back · <kbd>D</kbd> describe · <kbd>L</kbd> like · <kbd>R</kbd> reply · <kbd>W</kbd> where am I · <kbd>H</kbd> help · <kbd>Esc</kbd> stop.
+- **For low vision:** high contrast (yellow and white on black), text up to 160%, and a calm mode with no animation.
+- **Real buttons** with labels, visible focus rings, 44-pixel touch targets, and nothing shown by color alone.
+- **Never guesses who someone is** in a photo, and every fact comes with its source.
+- **Safe by design.** Scams and harassment are held before anyone hears them, and Coo asks *"are you sure?"* before anything that sends, spends or calls.
+- **Installs like an app.** On iPhone: open the link in Safari, then Share, then *Add to Home Screen*.
 
-- 🗣️ **Friends sound like friends.** Each person's post is spoken in their own Deepgram Aura-2 voice, not one robot narrator.
-- 🖼️ **Photos finally talk.** Every photo gets a real description, and you can ask follow-ups. Coo never guesses who someone is.
-- 📰 **Every fact has a source.** News and help come from Exa, and Coo says the outlet out loud. Help answers are limited to official sites (.gov, Library of Congress, ADA National Network).
-- 🛡️ **A safe room.** Jev holds scams and harassment in support circles before anyone hears them, and asks *"are you sure?"* before anything risky.
-- 🤲 **Hands for the web.** "Do it for me: refill my prescription" lets Manus click through the website, and it **always stops for your yes** before the final step.
-- ☎️ **Any phone works.** Grandma doesn't need a smartphone. Coo can call her landline, and anyone can call in.
-- 👀 **Sighted friends can join.** Big live captions of everything, a sponsor ticker, and any post can become a captioned share clip.
+We'd design and test every screen of the real product with blind and low-vision people. It's built to work alongside VoiceOver and TalkBack, not to replace them.
 
-## 🧩 Sponsors, and exactly what each one does
+## Sponsors, and what each one does
 
-| | What it powers in The Coop | Status |
+| Sponsor | What it powers | Status |
 |---|---|---|
-| **Vapi** | Coo herself: the assistant, 18 tools, the web mic, interruptions, phone calls in and out | ✅ live |
-| **Deepgram** | Flux speech-to-text for Coo's ears, Aura-2 voices for Coo and all 8 friends, transcripts for recorded voice posts | ✅ live |
-| **Claude** (vision, not a sponsor) | Describes each real photo and answers questions about it | ✅ live |
-| **Exa** | News from the last 48 hours, official help sources, beginner lessons, "more like this" | 🧪 built; shows labeled samples until our key is added |
-| **TypeSafe Jev** | Moderation (allow or hold), the "are you sure?" gate, and an intent router | 🧪 built; keyword rules stand in, labeled, until our key is added |
-| **Manus** | Web tasks for things that are hard with a screen reader, with a yes before the final step | 🧪 built; a labeled scripted run until our key is added |
-| **AdaL** | Share clips for Instagram and TikTok | 🧪 no public video API found, so clips are made in the browser and labeled "sample" |
+| **Vapi** | Coo herself: the voice assistant, 18 tools, the web mic, interruptions, phone calls | ✅ live |
+| **Deepgram** | Coo's ears (Flux speech-to-text), Coo's voice and all 8 friends' voices (Aura-2), and transcripts of recorded voice posts | ✅ live |
+| **Exa** | Real news from the last 48 hours, "more like this", help from official sites only, beginner lessons | ✅ live |
+| **TypeSafe Jev** | Holds scams and harassment, the "are you sure?" check, and working out what you meant | 🧪 built; keyword rules stand in, labeled "sample", until our key is added |
+| **Manus** | "Do it for me": web chores that are hard with a screen reader, always stopping for your yes | 🧪 built; a labeled sample run until our key is added |
+| **AdaL** | Captioned share clips, so sighted friends can join in | 🧪 no public video API, so clips are made in the browser, labeled "sample" |
+| **Claude** (not a sponsor) | Describes a shared photo and answers questions about it | ✅ live |
 
-We'd rather show you a labeled sample than fake a live call. Anything that isn't live says **"sample"** on screen and out loud.
+Anything not live says **"sample"** on screen and out loud. We'd rather show you that than fake it.
 
-## 🔧 How it works
-
-```mermaid
-flowchart LR
-    U["🧑 You<br/>(voice, keys or taps)"] -- mic --> V["Vapi<br/>Coo the assistant"]
-    P["☎️ Any phone"] -- call in --> V
-    V -- Deepgram Flux ears<br/>Aura-2 voice --> U
-    V -- 18 tool calls --> S["Coop server<br/>(Express)"]
-    S --> E["Exa<br/>news · help · lessons"]
-    S --> J["Jev<br/>hold · confirm · route"]
-    S --> M["Manus<br/>web tasks"]
-    S --> C["Claude<br/>photo vision"]
-    S --> D["Deepgram<br/>friend voices · transcripts"]
-    S -- live screen updates --> W["Web app<br/>captions · ticker · feed"]
-    S -- outbound call --> G["👵 Grandma's phone"]
-```
-
-- **One voice at a time.** Coo says *"Maya, 2 hours ago"*, goes silent, and Maya's own voice plays. Say "next" mid-post and it cuts straight to the next one.
-- **The screen follows the conversation.** Every tool call pushes a live update, so sighted friends see the post, the photo description, the story's source link and the sponsor ticker as Coo talks.
-- **Nothing breaks the demo.** Every sponsor has a fallback, and if Vapi can't connect, a local command engine with the browser's voice takes over.
-
-## ♿ Accessibility
-
-- Real buttons with labels, visible focus rings, 44px+ targets, nothing shown by color alone.
-- **Keyboard:** <kbd>Space</kbd> talk · <kbd>→</kbd>/<kbd>←</kbd> next/back · <kbd>D</kbd> describe · <kbd>L</kbd> like · <kbd>R</kbd> reply · <kbd>W</kbd> where am I · <kbd>H</kbd> help · <kbd>Esc</kbd> stop.
-- **Settings:** high contrast, text size up to 160%, Coo's speed, expert mode (shorter replies), "use my screen reader" (Coo goes quiet and captions go to a live region), calm mode (no animation), everyone mode.
-- Built to work **alongside** VoiceOver and TalkBack, not to replace them. A real product would be designed and tested with blind and low-vision users.
-
-## 📸 Screens
+## Screens
 
 | | | |
 |:-:|:-:|:-:|
-| <img src="docs/screens/01-lobby.jpg" width="230" alt="Lobby with Coo"><br>**Lobby** | <img src="docs/screens/02-feed.jpg" width="230" alt="Maya's voice post with photo"><br>**A friend's voice post** | <img src="docs/screens/03-describe.jpg" width="230" alt="Photo description and answer"><br>**Photos talk** |
-| <img src="docs/screens/04-reply.jpg" width="230" alt="Liked and replied"><br>**Like and reply by voice** | <img src="docs/screens/05-news.jpg" width="230" alt="News story with sources"><br>**News with sources** | <img src="docs/screens/06-circles.jpg" width="230" alt="Scam post held"><br>**Scam held in Circles** |
-| <img src="docs/screens/07-manus.jpg" width="230" alt="Manus web task waiting for yes"><br>**Do it for me** | <img src="docs/screens/08-call.jpg" width="230" alt="Calling Grandma Rosa"><br>**Calling Grandma** | <img src="docs/screens/09-high-contrast.jpg" width="230" alt="High contrast mode"><br>**High contrast** |
+| <img src="docs/screens/01-lobby.jpg" width="230" alt="Lobby: Coo the pigeon and a mic button"><br>**Lobby** | <img src="docs/screens/02-feed.jpg" width="230" alt="Maya's audio journey from Ocean Beach, now playing"><br>**An audio journey** | <img src="docs/screens/05-news.jpg" width="230" alt="Real news: a Braille trail opens at Havenwoods State Forest, from WPR"><br>**Real news, with sources** |
+| <img src="docs/screens/10-help.jpg" width="230" alt="VTA ACCESS paratransit for San Jose, from vta.gov"><br>**Help from official sites** | <img src="docs/screens/11-learn.jpg" width="230" alt="Intro to Adaptive Cooking from the Braille Institute"><br>**Learn new skills** | <img src="docs/screens/06-circles.jpg" width="230" alt="A scam post held in the New to vision loss circle"><br>**Scams held in Circles** |
+| <img src="docs/screens/03-describe.jpg" width="230" alt="Coo describing a shared ocean photo and answering a question"><br>**Photos, if you want them** | <img src="docs/screens/07-manus.jpg" width="230" alt="A web task waiting for the user's yes"><br>**Do it for me** | <img src="docs/screens/09-high-contrast.jpg" width="230" alt="High contrast mode, yellow on black"><br>**High contrast** |
 
-## 🛠 Run it locally
+<div align="center">
+<img src="docs/demo.gif" width="300" alt="Animated tour: lobby, an audio journey, a photo description, real news, help, a lesson, a held scam, a web task, and a call to Grandma">
+</div>
+
+## How it works
+
+```mermaid
+flowchart LR
+    U["You<br/>(voice, keys or taps)"] -- talk --> V["Vapi<br/>Coo the assistant"]
+    V -- "Deepgram ears and voice" --> U
+    V -- "18 tool calls" --> S["Coop server"]
+    S --> E["Exa<br/>news, help, lessons"]
+    S --> J["Jev<br/>hold, confirm, route"]
+    S --> M["Manus<br/>web tasks"]
+    S --> D["Deepgram<br/>friends' voices"]
+    S --> C["Claude<br/>photo descriptions"]
+    S -- "live updates" --> W["Screen<br/>captions, feed, ticker"]
+```
+
+When you say "what's new?", Vapi hears you through Deepgram and Coo calls the feed tool. The server answers, the screen jumps to Maya's journey, and Coo says *"Maya, 2 hours ago."* Then Maya's own Deepgram voice plays. If anything fails, a backup voice built into the browser takes over, so the app never goes silent.
+
+## Run it locally
 
 ```bash
 npm install
@@ -118,23 +124,19 @@ cp .env.example .env   # add your keys
 npm run dev            # web on :5173, server on :8787
 ```
 
-In a second terminal, give Vapi a way to reach the tools:
+Give Vapi a way to reach your laptop, then point everything at that link:
 
 ```bash
 cloudflared tunnel --url http://localhost:8787
 ```
 
-Then point everything at that link. This updates Coo on Vapi and redeploys the site:
-
 ```bash
-npm run new-tunnel -- https://some-words.trycloudflare.com
+npm run new-tunnel -- https://your-link.trycloudflare.com
 ```
 
 ```bash
-npm run check   # ✅/❌ for every sponsor in a few seconds
+npm run check   # ✅ or ❌ for every sponsor in a few seconds
 ```
-
-Use Chrome for the mic. `npm run setup` saves Coo's id, the tunnel link and the tool password in `.env.local`, so editing `.env` can't wipe them. Only requests carrying the password can use `/tools/*`.
 
 <details>
 <summary><b>Environment variables</b></summary>
@@ -142,32 +144,20 @@ Use Chrome for the mic. `npm run setup` saves Coo's id, the tunnel link and the 
 | Variable | What it's for |
 |---|---|
 | `VAPI_PRIVATE_KEY`, `VAPI_PUBLIC_KEY` | Vapi server and browser keys |
-| `VAPI_ASSISTANT_ID` | Written by `npm run setup` |
-| `VAPI_PHONE_NUMBER_ID` | Phone in and out. Calling out needs a number imported from Twilio, Vonage or Telnyx |
-| `DEMO_PHONE` | The phone Coo rings, `+1XXXXXXXXXX`, belonging to someone who agreed |
-| `DEEPGRAM_API_KEY` | Friend voices and voice-post transcripts |
-| `EXA_API_KEY` · `TYPESAFE_API_KEY` · `MANUS_API_KEY` | Turn the 🧪 features live |
+| `VAPI_PHONE_NUMBER_ID` | A phone number people can call |
+| `DEEPGRAM_API_KEY` | Friends' voices and voice-post transcripts |
+| `EXA_API_KEY` | Real news, help and lessons |
+| `TYPESAFE_API_KEY`, `MANUS_API_KEY` | Turn on the 🧪 features |
 | `ANTHROPIC_API_KEY` | Photo descriptions |
-| `PUBLIC_URL`, `TOOLS_SECRET` | The tunnel link and its password |
+
+`npm run setup` saves Coo's id, the tunnel link and the tool password in `.env.local`.
 
 </details>
 
-<details>
-<summary><b>Project map</b></summary>
+## What's next
 
-```
-web/      Vite + React + TypeScript. Live captions, scrolling feed, sponsor ticker, local fallback engine
-server/   Express + TypeScript. Coo's 18 tools, sponsor clients, live updates, data.json storage
-scripts/  check (sponsor status), setup (create Coo on Vapi), new-tunnel (repoint everything)
-thecoop.html   the original one-file prototype
-```
+A phone number anyone can call from a landline, recording a journey right in the app, Spanish with automatic language detection, and co-designing every screen with blind and low-vision testers.
 
-</details>
+## Credits
 
-## 🌱 What's next
-
-Recording a photo with a voice post, letting the poster edit a photo's description, Spanish with automatic language detection, a weekly digest Coo reads you, and co-designing every screen with blind and low-vision testers.
-
-## 💛 Credits
-
-Built in one evening at the voice agent hackathon at **Vapi HQ** by [Arushi Nirmal](https://github.com/arushiSH5-cyber) and team. Photo credits are in [`web/public/photos/CREDITS.md`](web/public/photos/CREDITS.md). The friends in the feed are made up, and so is Grandma Rosa (sorry, Rosa). 🐦
+Built at the **Side Quest Hotline** voice hackathon at **Vapi HQ** by [Arushi Nirmal](https://github.com/arushiSH5-cyber) and team. The friends in the feed and their journeys are made up. Photo credits are in [`web/public/photos/CREDITS.md`](web/public/photos/CREDITS.md).
