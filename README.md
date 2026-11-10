@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/icon.png" width="128" alt="The Coop app icon: Coo, a round white pigeon wearing blue headphones">
+<img src="docs/logo.png" width="520" alt="The Coop logo: Coo, a round white pigeon wearing blue headphones, next to the words the coop, social media you can hear">
 
 # The Coop
 
