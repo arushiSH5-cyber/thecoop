@@ -11,6 +11,15 @@ if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(url)) {
   process.exit(1);
 }
 
+// Only switch to a link that really reaches this server, so a typo or the example link can't break the live site.
+const healthy = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(10000) })
+  .then((r) => r.ok)
+  .catch(() => false);
+if (!healthy) {
+  console.error(`❌ ${url} doesn't reach the server. Copy the real link from the cloudflared window, and make sure npm run dev is running.`);
+  process.exit(1);
+}
+
 const text = fs.existsSync(LOCAL_ENV) ? fs.readFileSync(LOCAL_ENV, "utf8") : "";
 const kept = text.split("\n").filter((l) => l && !l.startsWith("PUBLIC_URL="));
 fs.writeFileSync(LOCAL_ENV, [`PUBLIC_URL=${url}`, ...kept, ""].join("\n"), { mode: 0o600 });
